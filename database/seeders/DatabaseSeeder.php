@@ -15,9 +15,12 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        $this->call([
-            MagazineSeeder::class,
-        ]
+        $this->call(
+            [
+                MagazineSeeder::class,
+                CategorySeeder::class,
+                WriterSeeder::class,
+            ]
         );
     }
 }
