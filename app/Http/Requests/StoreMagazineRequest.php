@@ -13,7 +13,7 @@ class StoreMagazineRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class StoreMagazineRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string'],
+            'number' => ['required', 'numeric'],
+            'publish_date' => ['required', 'date'],
+            'image' => ['image'],
         ];
     }
 }

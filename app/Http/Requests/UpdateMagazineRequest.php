@@ -13,7 +13,7 @@ class UpdateMagazineRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class UpdateMagazineRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['string'],
+            'number' => ['numeric'],
+            'publish_date' => ['date'],
+            'image' => ['image'],
         ];
     }
 }

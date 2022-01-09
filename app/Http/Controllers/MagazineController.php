@@ -5,82 +5,56 @@ namespace App\Http\Controllers;
 use App\Models\Magazine;
 use App\Http\Requests\StoreMagazineRequest;
 use App\Http\Requests\UpdateMagazineRequest;
+use App\Http\Resources\MagazineResource;
 
 class MagazineController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $magazine =  Magazine::pagnaite(10);
+        return MagazineResource::collection($magazine);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreMagazineRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreMagazineRequest $request)
     {
-        //
+        $input = $request->validate();
+        $magazine = Magazine::create($input);
+
+        return $this->messageResponse('created', 201, $magazine);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Magazine  $magazine
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Magazine $magazine)
+
+    public function show($id)
     {
-        //
+        $magazine = Magazine::findOrFail($id);
+        return $this->messageResponse('Show single', $data = $magazine);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Magazine  $magazine
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Magazine $magazine)
+    public function update(UpdateMagazineRequest $request, $id)
     {
-        //
+        $input = $request->validate();
+
+        $magazine = Magazine::findOrFail($id);
+        $magazine->update($input);
+
+        return $this->messageResponse('Updated', $data = $magazine);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateMagazineRequest  $request
-     * @param  \App\Models\Magazine  $magazine
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateMagazineRequest $request, Magazine $magazine)
+    public function destroy($id)
     {
-        //
+        $magazine = Magazine::findOrFail($id);
+        $magazine->delete();
+
+        return $this->messageResponse('deleted');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Magazine  $magazine
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Magazine $magazine)
+
+    public function messageResponse(string $message, int $status = 200, $data = null)
     {
-        //
+        return response([
+            'data' =>  !$data ? new MagazineResource($data) : '',
+            'message' => $message,
+        ], $status);
     }
 }
