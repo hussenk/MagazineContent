@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MagazineController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,12 @@ Route::prefix('magazine')->group(function ($route) {
     $route->get('{id}', [MagazineController::class, 'show']);
     $route->match(['put', 'patch'], '{id}', [MagazineController::class, 'update']);
     $route->delete('{id}', [MagazineController::class, 'destroy']);
+});
+
+Route::prefix('category')->name('category.')->group(function ($route) {
+    $route->get('', [CategoryController::class, 'index'])->name('index');
+    $route->post('', [CategoryController::class, 'store'])->name('store');
+    $route->get('{id}', [CategoryController::class, 'show'])->name('show');
+    $route->match(['put', 'patch'], '{id}', [CategoryController::class, 'update'])->name('update');
+    $route->delete('{id}', [CategoryController::class, 'destroy'])->name('destroy');
 });
