@@ -26,33 +26,33 @@ class WriterController extends Controller
 
     public function show($id)
     {
-        $date =  Writer::findOrFail($id);
+        $writer =  Writer::findOrFail($id);
 
-        return $this->messageResponse('Show single', $date = $date);
+        return $this->messageResponse('Show single', $data = $writer);
     }
 
 
     public function update(UpdateWriterRequest $request, $id)
     {
         $request->validated();
-        $date =  Writer::findOrFail($id);
-        $date->update($request->all());
-        return $this->messageResponse('updated', $date = $date);
+        $writer =  Writer::findOrFail($id);
+        $writer->update($request->all());
+        return $this->messageResponse('updated', $data = $writer);
     }
 
     public function destroy($id)
     {
-        $date =  Writer::findOrFail($id);
-        $date->delete();
+        $writer =  Writer::findOrFail($id);
+        $writer->delete();
         return $this->messageResponse('deleted');
     }
 
-    public function messageResponse(string $message, int $status = 200, $date = null)
+    public function messageResponse(string $message, int $status = 200, $data = null)
     {
         return response(
             [
                 'message' => $message,
-                'data' => $date ? new NameResource($date) : '',
+                'data' => $data ? new NameResource($data) : '',
             ],
             $status,
         );
