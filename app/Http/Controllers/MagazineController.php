@@ -53,7 +53,7 @@ class MagazineController extends Controller
     public function messageResponse(string $message, int $status = 200, $data = null)
     {
         return response([
-            'data' =>  !$data ? new MagazineResource($data) : '',
+            'data' => $data ? new MagazineResource($data) : '',
             'message' => $message,
         ], $status);
     }
